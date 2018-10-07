@@ -71,11 +71,10 @@ let App = {
                         return todo.id == id
                     })
 
-                    order = State.todos[deleteIndex].order // Use existing order
+                    order = State.todos[deleteIndex].order // Use existing order when editing
                     State.todos.splice(deleteIndex, 1)
                 } else {
-                    State.highestOrder += 1
-                    console.log('adding 1...')
+                    State.highestOrder += 1 // Increment by one if adding new
                     order = State.highestOrder
                 }
 
