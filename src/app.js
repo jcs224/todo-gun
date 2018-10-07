@@ -133,9 +133,9 @@ let App = {
                         ]),
                         // Show incomplete todos
                         App.page == 'uncompleted' ?
-                        State.todos.filter((todo) => {
+                        collect(State.todos).filter((todo) => {
                             return todo.completed === false
-                        }).map((todo) => {
+                        }).sortBy('order').map((todo) => {
                             return m('.panel-block', [
                                 todo.id === App.editId ? 
                                 m('.field.has-addons', {
@@ -202,7 +202,7 @@ let App = {
                                     ])
                                 ]),
                             ])
-                        }) : null,
+                        }).all() : null,
                         // Show completed todos
                         App.page == 'completed' ?
                         State.todos.filter((todo) => {
