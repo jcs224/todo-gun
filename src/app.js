@@ -8,6 +8,7 @@ let State = {
     todosGun: null,
     todos: [],
     text: '',
+    editText: '',
 
     setTodo(value) {
         State.text = value
@@ -16,6 +17,15 @@ let State = {
     addTodo() {
         State.todosGun.set({text: State.text, completed: false})
         State.text = ''
+    },
+
+    setEditText(value) {
+        State.editText = value
+    },
+
+    editTodo(id) {
+        State.todosGun.get(id).put({text: State.editText})
+        App.editId = null
     },
 
     deleteTodo(id) {
@@ -33,6 +43,12 @@ let State = {
 
 let App = {
     page: 'uncompleted',
+    editId: null,
+
+    displayEdit(value) {
+        App.editId = value
+        State.editText = collect(State.todos).where('id', value).first().text
+    },
 
     oninit() {
         State.todosGun = Gun().get('todos')
@@ -115,7 +131,35 @@ let App = {
                             return todo.completed === false
                         }).map((todo) => {
                             return m('.panel-block', [
-                                m('.level', {style: 'width: 100%'}, [
+                                todo.id === App.editId ? 
+                                m('.field.has-addons', {
+                                    style: 'width: 100%'
+                                }, [
+                                    m('.control', {
+                                        style: 'width: 100%'
+                                    }, [
+                                        m('input.input.is-small', {
+                                            placeholder: 'Edited todo...',
+                                            oninput: m.withAttr('value', State.setEditText),
+                                            value: State.editText
+                                        })
+                                    ]),
+                                    m('.control', [
+                                        m('a.button.is-link.is-small', {
+                                            onclick: () => {
+                                                State.editTodo(todo.id)
+                                            }
+                                        }, 'Submit')
+                                    ]),
+                                    m('.control', [
+                                        m('a.button.is-warning.is-small', {
+                                            onclick: () => {
+                                                App.editId = null
+                                            }
+                                        }, 'Cancel')
+                                    ])
+                                ])
+                                : m('.level', {style: 'width: 100%'}, [
                                     m('.level-left', [
                                         m('.level-item', [
                                             m('label', [
@@ -134,7 +178,11 @@ let App = {
                                         m('.level-item', [
                                             m('.field.has-addons', [
                                                 m('p.control', [
-                                                    m('button.button.is-info.is-small', 'Edit')
+                                                    m('button.button.is-info.is-small', {
+                                                        onclick: () => {
+                                                            App.displayEdit(todo.id)
+                                                        }
+                                                    }, 'Edit')
                                                 ]),
                                                 m('p.control', [
                                                     m('button.button.is-danger.is-small', {
