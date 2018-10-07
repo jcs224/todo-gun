@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "bulma": "^0.7.1",
+    "gun": "^0.9.99996",
+    "mithril": "^1.1.6"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.10.2",
+    "sass": "^1.14.1"
+  }
+}
