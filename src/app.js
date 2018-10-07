@@ -9,6 +9,7 @@ let State = {
     todos: [],
     text: '',
     editText: '',
+    highestOrder: 0,
 
     setTodo(value) {
         State.text = value
@@ -63,16 +64,22 @@ let App = {
                 State.todos.splice(deleteIndex, 1)
             } else {
                 // Either adding or editing a todo item
-                // Even when editing, it is necessary to remove redundant entry from display list
+                // Even when editing, it is necessary to remove redundant entry from display list.
+                let order = null // Maintain order in list
                 if (collect(State.todos).contains('id', id)) {
                     let deleteIndex = _.findIndex(State.todos, (todo) => {
                         return todo.id == id
                     })
 
+                    order = State.todos[deleteIndex].order // Use existing order
                     State.todos.splice(deleteIndex, 1)
+                } else {
+                    State.highestOrder += 1
+                    console.log('adding 1...')
+                    order = State.highestOrder
                 }
 
-                State.todos.push({id: id, text: todoGun.text, completed: todoGun.completed})
+                State.todos.push({id: id, text: todoGun.text, completed: todoGun.completed, order: order})
             }
             // Since it wasn't a Mithril-invoked event, must redraw manually
             m.redraw()
