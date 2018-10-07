@@ -74,8 +74,12 @@ let App = {
                             'Todos'
                         ]),
                         m('.panel-block', [
-                            m('.field.has-addons', [
-                                m('.control', [
+                            m('.field.has-addons', {
+                                style: 'width: 100%'
+                            }, [
+                                m('.control', {
+                                    style: 'width: 100%'
+                                }, [
                                     m('input.input', {
                                         placeholder: 'Add todo...',
                                         oninput: m.withAttr('value', State.setTodo),
@@ -83,7 +87,7 @@ let App = {
                                     })
                                 ]),
                                 m('.control', [
-                                    m('a.button.is-info', {
+                                    m('a.button.is-primary', {
                                         onclick: () => {
                                             State.addTodo()
                                         }
@@ -116,6 +120,7 @@ let App = {
                                         m('.level-item', [
                                             m('label', [
                                                 m('input', {
+                                                    key: todo.id,
                                                     type: 'checkbox',
                                                     onchange: m.withAttr('checked', () => {
                                                         State.completeTodo(todo.id)
@@ -127,11 +132,18 @@ let App = {
                                     ]),
                                     m('.level-right', [
                                         m('.level-item', [
-                                            m('button.button.is-danger.is-small', {
-                                                onclick: () => {
-                                                    State.deleteTodo(todo.id)
-                                                }
-                                            }, 'Delete')
+                                            m('.field.has-addons', [
+                                                m('p.control', [
+                                                    m('button.button.is-info.is-small', 'Edit')
+                                                ]),
+                                                m('p.control', [
+                                                    m('button.button.is-danger.is-small', {
+                                                        onclick: () => {
+                                                            State.deleteTodo(todo.id)
+                                                        }
+                                                    }, 'Delete')
+                                                ])
+                                            ])
                                         ])
                                     ])
                                 ]),
@@ -148,12 +160,14 @@ let App = {
                                         m('.level-item', [
                                             m('label', [
                                                 m('input', {
+                                                    key: todo.id,
                                                     type: 'checkbox',
+                                                    checked: true,
                                                     onchange: m.withAttr('checked', () => {
                                                         State.uncompleteTodo(todo.id)
                                                     })
                                                 }),
-                                                todo.text,
+                                                m('del', todo.text),
                                             ]),
                                         ])
                                     ]),
