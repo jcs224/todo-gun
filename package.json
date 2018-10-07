@@ -1,7 +1,9 @@
 {
   "dependencies": {
     "bulma": "^0.7.1",
+    "collect.js": "^4.0.28",
     "gun": "^0.9.99996",
+    "lodash": "^4.17.11",
     "mithril": "^1.1.6"
   },
   "devDependencies": {
