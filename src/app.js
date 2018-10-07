@@ -136,7 +136,9 @@ let App = {
                         collect(State.todos).filter((todo) => {
                             return todo.completed === false
                         }).sortBy('order').map((todo) => {
-                            return m('.panel-block', [
+                            return m('.panel-block', {
+                                style: 'justify-content: space-between'
+                            }, [
                                 todo.id === App.editId ? 
                                 m('.field.has-addons', {
                                     style: 'width: 100%'
@@ -165,42 +167,34 @@ let App = {
                                         }, 'Cancel')
                                     ])
                                 ])
-                                : m('.level', {style: 'width: 100%'}, [
-                                    m('.level-left', [
-                                        m('.level-item', [
-                                            m('label', [
-                                                m('input', {
-                                                    key: todo.id,
-                                                    type: 'checkbox',
-                                                    onchange: m.withAttr('checked', () => {
-                                                        State.completeTodo(todo.id)
-                                                    })
-                                                }),
-                                                todo.text,
-                                            ]),
-                                        ])
+                                : [
+                                    m('label', [
+                                        m('input', {
+                                            key: todo.id,
+                                            type: 'checkbox',
+                                            onchange: m.withAttr('checked', () => {
+                                                State.completeTodo(todo.id)
+                                            })
+                                        }),
+                                        todo.text,
                                     ]),
-                                    m('.level-right', [
-                                        m('.level-item', [
-                                            m('.field.has-addons', [
-                                                m('p.control', [
-                                                    m('button.button.is-info.is-small', {
-                                                        onclick: () => {
-                                                            App.displayEdit(todo.id)
-                                                        }
-                                                    }, 'Edit')
-                                                ]),
-                                                m('p.control', [
-                                                    m('button.button.is-danger.is-small', {
-                                                        onclick: () => {
-                                                            State.deleteTodo(todo.id)
-                                                        }
-                                                    }, 'Delete')
-                                                ])
-                                            ])
+                                    m('.field.has-addons', [
+                                        m('p.control', [
+                                            m('button.button.is-info.is-small', {
+                                                onclick: () => {
+                                                    App.displayEdit(todo.id)
+                                                }
+                                            }, 'Edit')
+                                        ]),
+                                        m('p.control', [
+                                            m('button.button.is-danger.is-small', {
+                                                onclick: () => {
+                                                    State.deleteTodo(todo.id)
+                                                }
+                                            }, 'Delete')
                                         ])
                                     ])
-                                ]),
+                                ]
                             ])
                         }).all() : null,
                         // Show completed todos
