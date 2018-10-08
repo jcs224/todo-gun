@@ -96,24 +96,28 @@ let App = {
                             'Todos'
                         ]),
                         m('.panel-block', [
-                            m('.field.has-addons', {
+                            m('form', {
+                                onsubmit: (e) => {
+                                    e.preventDefault()
+                                    State.addTodo()
+                                },
                                 style: 'width: 100%'
                             }, [
-                                m('.control', {
-                                    style: 'width: 100%'
-                                }, [
-                                    m('input.input', {
-                                        placeholder: 'Add todo...',
-                                        oninput: m.withAttr('value', State.setTodo),
-                                        value: State.text
-                                    })
-                                ]),
-                                m('.control', [
-                                    m('a.button.is-primary', {
-                                        onclick: () => {
-                                            State.addTodo()
-                                        }
-                                    }, 'Add')
+                                m('.field.has-addons', [
+                                    m('.control', {
+                                        style: 'width: 100%'
+                                    }, [
+                                        m('input.input', {
+                                            placeholder: 'Add todo...',
+                                            oninput: m.withAttr('value', State.setTodo),
+                                            value: State.text
+                                        })
+                                    ]),
+                                    m('.control', [
+                                        m('button.button.is-primary', {
+                                            type: 'submit'
+                                        }, 'Add')
+                                    ])
                                 ])
                             ])
                         ]),
