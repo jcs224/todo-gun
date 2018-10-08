@@ -83,7 +83,6 @@ let App = {
             }
             // Since it wasn't a Mithril-invoked event, must redraw manually
             m.redraw()
-            console.log(State.todos)
         })
     },
 
