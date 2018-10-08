@@ -144,31 +144,40 @@ let App = {
                                 style: 'justify-content: space-between'
                             }, [
                                 todo.id === App.editId ? 
-                                m('.field.has-addons', {
-                                    style: 'width: 100%'
+                                m('form', {
+                                    onsubmit: (e) => {
+                                        e.preventDefault()
+                                        State.editTodo(todo.id)
+                                    }
                                 }, [
-                                    m('.control', {
+                                    m('.field.has-addons', {
                                         style: 'width: 100%'
                                     }, [
-                                        m('input.input.is-small', {
-                                            placeholder: 'Edited todo...',
-                                            oninput: m.withAttr('value', State.setEditText),
-                                            value: State.editText
-                                        })
-                                    ]),
-                                    m('.control', [
-                                        m('a.button.is-link.is-small', {
-                                            onclick: () => {
-                                                State.editTodo(todo.id)
-                                            }
-                                        }, 'Submit')
-                                    ]),
-                                    m('.control', [
-                                        m('a.button.is-warning.is-small', {
-                                            onclick: () => {
-                                                App.editId = null
-                                            }
-                                        }, 'Cancel')
+                                        m('.control', {
+                                            style: 'width: 100%'
+                                        }, [
+                                            m('input.input.is-small', {
+                                                id: 'todo-edit-'+todo.id,
+                                                placeholder: 'Edited todo...',
+                                                oninput: m.withAttr('value', State.setEditText),
+                                                value: State.editText,
+                                                oncreate(vnode) {
+                                                    vnode.dom.focus()
+                                                }
+                                            })
+                                        ]),
+                                        m('.control', [
+                                            m('button.button.is-link.is-small', {
+                                                type: 'submit'
+                                            }, 'Submit')
+                                        ]),
+                                        m('.control', [
+                                            m('a.button.is-warning.is-small', {
+                                                onclick: () => {
+                                                    App.editId = null
+                                                }
+                                            }, 'Cancel')
+                                        ])
                                     ])
                                 ])
                                 : [
