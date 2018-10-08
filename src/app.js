@@ -52,7 +52,7 @@ let App = {
         State.editText = collect(State.todos).where('id', value).first().text
     },
 
-    oninit() {
+    oncreate() {
         State.todosGun = Gun(process.env.GUN_URL ? process.env.GUN_URL : '').get('todos')
 
         State.todosGun.map().on((todoGun, id) => {
@@ -82,7 +82,7 @@ let App = {
                 State.todos.push({id: id, text: todoGun.text, completed: todoGun.completed, order: order})
             }
             // Since it wasn't a Mithril-invoked event, must redraw manually
-            // m.redraw()
+            m.redraw()
         })
     },
 
