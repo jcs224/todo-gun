@@ -1,3 +1,4 @@
+import '@fortawesome/fontawesome-free/js/all.js'
 import './app.scss'
 import m from 'mithril'
 import Gun from 'gun/gun'
@@ -117,7 +118,7 @@ let App = {
                                     m('.control', [
                                         m('button.button.is-primary', {
                                             type: 'submit'
-                                        }, 'Add')
+                                        }, m('i.fas.fa-plus'))
                                     ])
                                 ])
                             ])
@@ -198,14 +199,14 @@ let App = {
                                                 onclick: () => {
                                                     App.displayEdit(todo.id)
                                                 }
-                                            }, 'Edit')
+                                            }, m('i.fas.fa-edit'))
                                         ]),
                                         m('p.control', [
                                             m('button.button.is-danger.is-small', {
                                                 onclick: () => {
                                                     State.deleteTodo(todo.id)
                                                 }
-                                            }, 'Delete')
+                                            }, m('i.fas.fa-trash-alt'))
                                         ])
                                     ])
                                 ]
@@ -274,14 +275,14 @@ let App = {
                                                 onclick: () => {
                                                     App.displayEdit(todo.id)
                                                 }
-                                            }, 'Edit')
+                                            }, m('i.fas.fa-edit'))
                                         ]),
                                         m('p.control', [
                                             m('button.button.is-danger.is-small', {
                                                 onclick: () => {
                                                     State.deleteTodo(todo.id)
                                                 }
-                                            }, 'Delete')
+                                            }, m('i.fas.fa-trash-alt'))
                                         ])
                                     ])
                                 ]
