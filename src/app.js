@@ -88,11 +88,12 @@ let App = {
 
     view() {
         return m('.container', [
-            m('h1.title.is-one', 'Todo Gun demo'),
             m('.columns', [
-                m('.column.is-one-third', [
+                m('.column.is-half.is-offset-one-quarter', {
+                    style: 'padding: 2rem;'
+                }, [
                     m('.panel', [
-                        m('p.panel-heading', [
+                        m('h1.panel-heading', [
                             'Todos'
                         ]),
                         m('.panel-block', [
