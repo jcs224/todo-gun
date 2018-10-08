@@ -52,7 +52,7 @@ let App = {
     },
 
     oninit() {
-        State.todosGun = Gun().get('todos')
+        State.todosGun = Gun(process.env.GUN_URL ? process.env.GUN_URL : '').get('todos')
 
         State.todosGun.map().on((todoGun, id) => {
             // if null at this id, it has been deleted. Remove it from display as well.
