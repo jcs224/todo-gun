@@ -149,11 +149,10 @@ let App = {
                                     onsubmit: (e) => {
                                         e.preventDefault()
                                         State.editTodo(todo.id)
-                                    }
+                                    },
+                                    style: 'width: 100%'
                                 }, [
-                                    m('.field.has-addons', {
-                                        style: 'width: 100%'
-                                    }, [
+                                    m('.field.has-addons', [
                                         m('.control', {
                                             style: 'width: 100%'
                                         }, [
@@ -224,11 +223,10 @@ let App = {
                                     onsubmit: (e) => {
                                         e.preventDefault()
                                         State.editTodo(todo.id)
-                                    }
+                                    },
+                                    style: 'width: 100%'
                                 }, [
-                                    m('.field.has-addons', {
-                                        style: 'width: 100%'
-                                    }, [
+                                    m('.field.has-addons', [
                                         m('.control', {
                                             style: 'width: 100%'
                                         }, [
