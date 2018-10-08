@@ -82,7 +82,7 @@ let App = {
                 State.todos.push({id: id, text: todoGun.text, completed: todoGun.completed, order: order})
             }
             // Since it wasn't a Mithril-invoked event, must redraw manually
-            m.redraw()
+            // m.redraw()
         })
     },
 
