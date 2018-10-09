@@ -5,53 +5,10 @@ import Gun from 'gun/gun'
 import _ from 'lodash'
 import collect from 'collect.js'
 
-let State = {
-    todosGun: null,
-    todos: [],
-    text: '',
-    editText: '',
-    highestOrder: 0,
-
-    setTodo(value) {
-        State.text = value
-    },
-
-    addTodo() {
-        State.todosGun.set({text: State.text, completed: false})
-        State.text = ''
-    },
-
-    setEditText(value) {
-        State.editText = value
-    },
-
-    editTodo(id) {
-        State.todosGun.get(id).put({text: State.editText})
-        App.editId = null
-    },
-
-    deleteTodo(id) {
-        State.todosGun.get(id).put(null)
-    },
-
-    completeTodo(id) {
-        State.todosGun.get(id).put({completed: true})
-    },
-
-    uncompleteTodo(id) {
-        State.todosGun.get(id).put({completed: false})
-    }
-}
+import TodoItem from './components/TodoItem'
+import State from './State'
 
 let App = {
-    page: 'uncompleted',
-    editId: null,
-
-    displayEdit(value) {
-        App.editId = value
-        State.editText = collect(State.todos).where('id', value).first().text
-    },
-
     oncreate() {
         State.todosGun = Gun(process.env.GUN_URL ? process.env.GUN_URL : '').get('todos')
 
@@ -124,166 +81,37 @@ let App = {
                         ]),
                         m('p.panel-tabs', [
                             m('a', { 
-                                class: App.page == 'uncompleted' ? 'is-active' : null,
+                                class: State.page == 'uncompleted' ? 'is-active' : null,
                                 onclick: () => {
-                                    App.page = 'uncompleted'
+                                    State.page = 'uncompleted'
                                 } 
                             }, 'Uncompleted'),
                             m('a', { 
-                                class: App.page == 'completed' ? 'is-active' : null,
+                                class: State.page == 'completed' ? 'is-active' : null,
                                 onclick: () => {
-                                    App.page = 'completed'
+                                    State.page = 'completed'
                                 }  
                             }, 'Completed')
                         ]),
                         // Show incomplete todos
-                        App.page == 'uncompleted' ?
+                        State.page == 'uncompleted' ?
                         collect(State.todos).filter((todo) => {
                             return todo.completed === false
                         }).sortBy('order').map((todo) => {
-                            return m('.panel-block', {
-                                style: 'justify-content: space-between'
-                            }, [
-                                todo.id === App.editId ? 
-                                m('form', {
-                                    onsubmit: (e) => {
-                                        e.preventDefault()
-                                        State.editTodo(todo.id)
-                                    },
-                                    style: 'width: 100%'
-                                }, [
-                                    m('.field.has-addons', [
-                                        m('.control', {
-                                            style: 'width: 100%'
-                                        }, [
-                                            m('input.input.is-small', {
-                                                id: 'todo-edit-'+todo.id,
-                                                placeholder: 'Edited todo...',
-                                                oninput: m.withAttr('value', State.setEditText),
-                                                value: State.editText,
-                                                oncreate(vnode) {
-                                                    vnode.dom.focus()
-                                                }
-                                            })
-                                        ]),
-                                        m('.control', [
-                                            m('button.button.is-link.is-small', {
-                                                type: 'submit'
-                                            }, 'Submit')
-                                        ]),
-                                        m('.control', [
-                                            m('a.button.is-warning.is-small', {
-                                                onclick: () => {
-                                                    App.editId = null
-                                                }
-                                            }, 'Cancel')
-                                        ])
-                                    ])
-                                ])
-                                : [
-                                    m('label', [
-                                        m('input', {
-                                            key: todo.id,
-                                            type: 'checkbox',
-                                            onchange: m.withAttr('checked', () => {
-                                                State.completeTodo(todo.id)
-                                            })
-                                        }),
-                                        todo.text,
-                                    ]),
-                                    m('.field.has-addons', [
-                                        m('p.control', [
-                                            m('button.button.is-info.is-small', {
-                                                onclick: () => {
-                                                    App.displayEdit(todo.id)
-                                                }
-                                            }, m('i.fas.fa-edit'))
-                                        ]),
-                                        m('p.control', [
-                                            m('button.button.is-danger.is-small', {
-                                                onclick: () => {
-                                                    State.deleteTodo(todo.id)
-                                                }
-                                            }, m('i.fas.fa-trash-alt'))
-                                        ])
-                                    ])
-                                ]
-                            ])
+                            return m(TodoItem, {
+                                todo: todo,
+                                completed: false
+                            })
                         }).all() : null,
                         // Show completed todos
-                        App.page == 'completed' ?
+                        State.page == 'completed' ?
                         collect(State.todos).filter((todo) => {
                             return todo.completed === true
                         }).sortBy('order').map((todo) => {
-                            return m('.panel-block', {
-                                style: 'justify-content: space-between'
-                            }, [
-                                todo.id === App.editId ? 
-                                m('form', {
-                                    onsubmit: (e) => {
-                                        e.preventDefault()
-                                        State.editTodo(todo.id)
-                                    },
-                                    style: 'width: 100%'
-                                }, [
-                                    m('.field.has-addons', [
-                                        m('.control', {
-                                            style: 'width: 100%'
-                                        }, [
-                                            m('input.input.is-small', {
-                                                id: 'todo-edit-'+todo.id,
-                                                placeholder: 'Edited todo...',
-                                                oninput: m.withAttr('value', State.setEditText),
-                                                value: State.editText,
-                                                oncreate(vnode) {
-                                                    vnode.dom.focus()
-                                                }
-                                            })
-                                        ]),
-                                        m('.control', [
-                                            m('button.button.is-link.is-small', {
-                                                type: 'submit'
-                                            }, 'Submit')
-                                        ]),
-                                        m('.control', [
-                                            m('a.button.is-warning.is-small', {
-                                                onclick: () => {
-                                                    App.editId = null
-                                                }
-                                            }, 'Cancel')
-                                        ])
-                                    ])
-                                ])
-                                : [
-                                    m('label', [
-                                        m('input', {
-                                            key: todo.id,
-                                            type: 'checkbox',
-                                            onchange: m.withAttr('checked', () => {
-                                                State.uncompleteTodo(todo.id)
-                                            }),
-                                            checked: true
-                                        }),
-                                        m('del', todo.text)
-                                    ]),
-                                    m('.field.has-addons', [
-                                        m('p.control', [
-                                            m('button.button.is-info.is-small', {
-                                                onclick: () => {
-                                                    App.displayEdit(todo.id)
-                                                }
-                                            }, m('i.fas.fa-edit'))
-                                        ]),
-                                        m('p.control', [
-                                            m('button.button.is-danger.is-small', {
-                                                onclick: () => {
-                                                    State.deleteTodo(todo.id)
-                                                }
-                                            }, m('i.fas.fa-trash-alt'))
-                                        ])
-                                    ])
-                                ]
-                            ])
+                            return m(TodoItem, {
+                                todo: todo,
+                                completed: true
+                            })
                         }).all() : null,
                     ])
                 ])
