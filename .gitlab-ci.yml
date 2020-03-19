@@ -1,0 +1,17 @@
+image: node:lts
+
+cache:
+  paths:
+  - node_modules/
+
+pages:
+    script:
+    - yarn install
+    - echo "GUN_URL=$GUN_URL" > .env
+    - npx parcel build src/index.html --out-dir public --public-url .
+
+    artifacts:
+        paths:
+        - public
+    only:
+    - master
