@@ -4,7 +4,7 @@
     "bulma": "^0.7.1",
     "collect.js": "^4.0.28",
     "gun": "0.2019.930",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.19",
     "mithril": "^1.1.6"
   },
   "devDependencies": {
